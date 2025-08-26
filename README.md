@@ -38,31 +38,39 @@ git clone https://github.com/KlychkoffE/sniply-pro.git
 | DELETE  | /api/links/:linkId      | Удаление ссылки                       |
 | GET     | /api/analytics/:linkId  | Получение аналитики                   |
 
-## Пример запроса на создание ссылки
+## Пример работы с API через класс
 
 ```js
-// Создание ссылки
-const response = await fetch('/api/links/create', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    originalUrl: 'https://example.com',
-    ctaData: {
-      text: 'Специальное предложение!',
-      buttonText: 'Купить сейчас',
-      buttonColor: '#4361ee'
-    },
-    masking: {
-      enabled: true,
-      customPath: '/special-offer'
-    }
-  })
-});
+// API функции
+class SniplyAPI {
+  constructor(baseUrl = '/api') {
+    this.baseUrl = baseUrl;
+  }
 
-const data = await response.json();
-console.log(data.shortUrl); // https://your-domain.com/s/abc123
+  async createLink(linkData) {
+    const response = await fetch(`${this.baseUrl}/links/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(linkData)
+    });
+    return response.json();
+  }
+
+  async getLink(linkId) {
+    const response = await fetch(`${this.baseUrl}/links/${linkId}`);
+    return response.json();
+  }
+
+  async getAnalytics(linkId) {
+    const response = await fetch(`${this.baseUrl}/analytics/${linkId}`);
+    return response.json();
+  }
+}
+
+// Инициализация API
+const api = new SniplyAPI();
 ```
 
 ## Технологии
