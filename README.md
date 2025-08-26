@@ -38,6 +38,33 @@ git clone https://github.com/KlychkoffE/sniply-pro.git
 | DELETE  | /api/links/:linkId      | Удаление ссылки                       |
 | GET     | /api/analytics/:linkId  | Получение аналитики                   |
 
+## Пример запроса на создание ссылки
+
+```js
+// Создание ссылки
+const response = await fetch('/api/links/create', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    originalUrl: 'https://example.com',
+    ctaData: {
+      text: 'Специальное предложение!',
+      buttonText: 'Купить сейчас',
+      buttonColor: '#4361ee'
+    },
+    masking: {
+      enabled: true,
+      customPath: '/special-offer'
+    }
+  })
+});
+
+const data = await response.json();
+console.log(data.shortUrl); // https://your-domain.com/s/abc123
+```
+
 ## Технологии
 HTML5, CSS3, JavaScript (ES6+)
 
