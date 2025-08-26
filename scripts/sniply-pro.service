@@ -1,0 +1,13 @@
+[Unit]
+Description=SniplyPro Server
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/sniply-pro/server
+ExecStart=/usr/bin/node app.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
