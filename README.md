@@ -28,6 +28,16 @@ git clone https://github.com/KlychkoffE/sniply-pro.git
 
 Сгенерируйте ссылку и скопируйте ее
 
+## API Endpoints
+
+| Метод   | Endpoint                | Описание                              |
+|---------|-------------------------|---------------------------------------|
+| POST    | /api/links/create       | Создание новой ссылки с CTA           |
+| GET     | /api/links/:linkId      | Получение информации о ссылке         |
+| PUT     | /api/links/:linkId      | Обновление ссылки                     |
+| DELETE  | /api/links/:linkId      | Удаление ссылки                       |
+| GET     | /api/analytics/:linkId  | Получение аналитики                   |
+
 ## Технологии
 HTML5, CSS3, JavaScript (ES6+)
 
