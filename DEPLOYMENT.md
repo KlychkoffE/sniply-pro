@@ -68,6 +68,35 @@
 
 ---
 
+## Шаг 4: Настройка Custom Domains (опционально)
+
+1. В настройках сервиса перейдите в "Custom Domains"
+2. Добавьте ваш домен
+3. Настройте DNS записи как указано в инструкции
+
+## Шаг 5: Мониторинг и логи
+
+- Используйте Render Dashboard для просмотра логов
+- Настройте alerts в разделе "Settings" → "Alerts"
+- Мониторинг здоровья через `/api/health` endpoint
+
+## Troubleshooting
+
+### common issues:
+1. **MongoDB connection fails**: Проверьте whitelist IP в MongoDB Atlas
+2. **Build fails**: Проверьте версию Node.js в package.json
+3. **CORS errors**: Проверьте ALLOWED_ORIGINS переменную
+4. **Static files not serving**: Проверьте пути в статическом сервисе
+
+## Support
+
+Если возникли проблемы:
+1. Проверьте логи в Render Dashboard
+2. Убедитесь что все environment variables установлены
+3. Проверьте подключение к MongoDB
+
+---
+
 > **Совет:** Не публикуйте реальные секреты и пароли в публичном репозитории. Используйте `.env.example` для шаблона.
 
 ## Готово!
