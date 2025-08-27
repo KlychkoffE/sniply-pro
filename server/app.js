@@ -4,9 +4,10 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
-const mongoose = require('mongoose');
 const path = require('path');
 
+// Импорт подключения к базе данных
+const connectDB = require('./config/database');
 // Импорт маршрутов
 const linkRoutes = require('./routes/links');
 const analyticsRoutes = require('./routes/analytics');
@@ -47,19 +48,8 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Подключение к MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/sniplypro';
-
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log('✅ Connected to MongoDB');
-})
-.catch((error) => {
-  console.error('❌ MongoDB connection error:', error);
-});
+// Подключение к MongoDB через отдельный модуль
+connectDB();
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -131,7 +121,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
 process.on('SIGTERM', () => {
   console.log('SIGTERM received, shutting down gracefully');
   server.close(() => {
-    mongoose.connection.close();
+    // Закрытие соединения с базой данных теперь обрабатывается в config/database.js
     console.log('Process terminated');
   });
 });
