@@ -1,0 +1,46 @@
+# Файл конфигурации Render
+services:
+  # Веб-сервис (Backend API)
+  - type: web
+    name: sniply-pro-api
+    env: node
+    plan: free
+    region: frankfurt  # или другой регион ближе к вам
+    buildCommand: cd server && npm install
+    startCommand: cd server && node app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromSecret: MONGODB_URI
+      - key: PORT
+        value: 10000
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+  # Веб-сервис (Frontend)
+  - type: web
+    name: sniply-pro-frontend
+    env: static
+    plan: free
+    region: frankfurt
+    buildCommand: echo "Building frontend..."
+    staticPublishPath: ./client
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://sniply-pro-api.onrender.com/api/:splat
+      - type: rewrite
+        source: /s/*
+        destination: https://sniply-pro-api.onrender.com/s/:splat
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=3600
+    autoDeploy: true
+
+databases:
+  - name: sniply-pro-mongodb
+    plan: free
+    databaseName: sniplypro
+    region: frankfurt
