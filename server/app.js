@@ -11,6 +11,7 @@ const connectDB = require('./config/database');
 // Импорт маршрутов
 const linkRoutes = require('./routes/links');
 const analyticsRoutes = require('./routes/analytics');
+const healthRoute = require('./routes/health');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,10 +31,14 @@ app.use(helmet({
 
 app.use(compression());
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS || [
-    'http://localhost:3000',
-    'https://sniply-pro-frontend.onrender.com'
-  ],
+  origin: (origin, callback) => {
+    const allowed = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim());
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
@@ -51,15 +56,8 @@ app.use('/api/', limiter);
 // Подключение к MongoDB через отдельный модуль
 connectDB();
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    environment: process.env.NODE_ENV
-  });
-});
+// Health check endpoint (расширенный)
+app.use('/api/health', healthRoute);
 
 // Статические файлы (для разработки)
 if (process.env.NODE_ENV === 'development') {
