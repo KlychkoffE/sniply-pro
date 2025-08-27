@@ -57,9 +57,14 @@
 | ALLOWED_ORIGINS    | https://your-frontend.onrender.com                          | Разрешённые источники CORS               |
 | SESSION_SECRET     | your-super-secret-session-key-here                          | Секрет для сессий/куки                  |
 
-### Для Frontend (Static Site):
+### Для Frontend (Environment Variables):
 
-Обычно переменные не требуются, если только не используется сборка с переменными окружения.
+| Переменная         | Пример значения                        | Описание                                 |
+|--------------------|----------------------------------------|------------------------------------------|
+| REACT_APP_API_URL  | https://sniply-pro-api.onrender.com    | URL backend API для фронтенда            |
+| PUBLIC_URL         | https://sniply-pro-frontend.onrender.com | Базовый URL фронтенда (если требуется)   |
+
+> **Примечание:** Если фронтенд не использует переменные окружения (например, чистый HTML/JS), этот шаг можно пропустить. Для React/Vue/Next.js и других SPA переменные задаются через Dashboard Render или файл .env.production.
 
 ---
 
